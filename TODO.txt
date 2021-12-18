@@ -1,0 +1,3 @@
+refactor for inheritance / polymorphism
+svm
+neural net
