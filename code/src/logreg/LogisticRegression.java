@@ -104,12 +104,11 @@ public class LogisticRegression {
 			
 			Vector xi = training[i].getData();
 			float yi = training[i].getLabelVal();
-				
-			Vector dwi = new Vector(deltaWeights.getLength());
-			for (int j = 0; j < dwi.getLength(); j++) 
-				dwi.setValue( j, -1 * xi.getValue(j) * (yi - this.compute(xi)) );
-				
-			float dbi = -1 * (yi - this.compute(xi));
+			
+			float error = yi - this.compute(xi);
+
+			Vector dwi = xi.timesScalar(-1 * error);
+			float dbi = -1 * error;
 				
 			deltaWeights = deltaWeights.plus(dwi);
 			deltaBias += dbi;

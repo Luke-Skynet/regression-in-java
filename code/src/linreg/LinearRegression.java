@@ -104,11 +104,10 @@ public class LinearRegression {
 			Vector xi = training[i].getData();
 			float yi = training[i].getLabel();
 				
-			Vector dwi = new Vector(deltaWeights.getLength());
-			for (int j = 0; j < dwi.getLength(); j++) 
-				dwi.setValue( j, -2 * xi.getValue(j) * (yi - this.compute(xi)) );
-				
-			float dbi = (-2 * (yi - this.compute(xi)));
+			float error = yi - this.compute(xi);
+
+			Vector dwi = xi.timesScalar(-2 * error);
+			float dbi = (-2 * error);
 				
 			deltaWeights = deltaWeights.plus(dwi);
 			deltaBias += dbi;
