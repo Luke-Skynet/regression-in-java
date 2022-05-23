@@ -129,8 +129,11 @@ public class LogisticRegression {
 			Vector xi = examples[i].getData();
 			float yi = examples[i].getLabelVal();
 			
-			loss += (-1 * yi * Math.log(this.compute(xi)) ) + 
-				   ( -1 * (1.0f-yi) * Math.log(1.0f - this.compute(xi)) );
+			if(yi == 1.0f){
+				loss += -1 * Math.log(this.compute(xi));
+			} else {
+				loss += -1 * Math.log(1.0f - this.compute(xi));
+			}
 		}
 		
 		return loss;
