@@ -13,9 +13,9 @@ public class LogRegTest {
 		
 		int dimensions = 100;
 		
-		int iterations = 7500;
+		int iterations = 10000;
 		int batchsize = 100;
-		float learningRate = 0.1f;
+		float learningRate = 0.05f;
 		
 		int trainingSize = 5000;
 		int testingSize = 1000;
@@ -60,7 +60,7 @@ public class LogRegTest {
 		
 		LogisticRegression model = new LogisticRegression(dimensions);
 		model.train(trainingExamples, testingExamples, learningRate, iterations, batchsize, verbose);
-		
+
 		//Show Target Parameters compared to Model Parameters
 		
 		Vector weights = model.getWeights();

@@ -13,7 +13,7 @@ public class LogRegData {
 	}
 	public LogRegData(Vector data, float label) {
 		this.data = data;
-		this.label = label > .5;
+		this.label = label > (float) Math.random();
 	}
 	public Vector getData() {
 		return data;
