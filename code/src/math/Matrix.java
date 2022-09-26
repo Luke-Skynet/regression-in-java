@@ -124,28 +124,24 @@ public class Matrix {
 		return result;
 	}
 	
-	public Matrix dot(Matrix that) {
-		
+	public Matrix dot(Matrix that){
+
 		if (this.getRowSize() != that.getColumnSize())
 			throw new IllegalArgumentException();
 		
 		int columnsize = this.getColumnSize();
 		int rowsize = that.getRowSize();
-		int x = this.getRowSize();
 		
 		Matrix result = new Matrix(columnsize, rowsize);
-		
+
 		for (int i = 0; i < columnsize; i++) {
 			for (int j = 0; j < rowsize; j++) {
-				float value = 0f;
-				for (int k = 0; k < x; k++) {
-					value += this.getValue(i, k) * that.getValue(k, j);
-				}
-				result.setValue(i, j, value);
+				result.setValue(i,j, this.getRowVector(i).dot(that.getColumnVector(j)));
 			}
 		}
 		
 		return result;
+
 	}
 	
 	public Vector dot(Vector that) {
