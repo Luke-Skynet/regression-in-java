@@ -1,8 +1,10 @@
 package linreg;
 
+import interfaces.Sample;
+
 import math.Vector;
 
-public class LinRegData {
+public class LinRegData implements Sample{
 	
 	private final Vector data;
 	private final float label;
@@ -12,7 +14,7 @@ public class LinRegData {
 		this.label = label;
 	}
 	
-	Vector getData() {
+	public Vector getData() {
 		return data;
 	}
 	

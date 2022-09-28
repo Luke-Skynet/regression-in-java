@@ -13,8 +13,8 @@ public class LogRegTest {
 		
 		int dimensions = 100;
 		
-		int iterations = 10000;
-		int batchsize = 100;
+		int iterations = 30000;
+		int batchsize = 1000;
 		float learningRate = 0.05f;
 		
 		int trainingSize = 5000;

@@ -1,8 +1,10 @@
 package logreg;
 
+import interfaces.Sample;
+
 import math.Vector;
 
-public class LogRegData {
+public class LogRegData implements Sample{
 	
 	private final Vector data;
 	private final boolean label;

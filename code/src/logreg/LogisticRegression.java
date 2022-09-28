@@ -1,10 +1,12 @@
 package logreg;
 
+import interfaces.Model;
+
 import java.io.*;
 import math.Vector;
 import math.Functions;
 
-public class LogisticRegression {
+public class LogisticRegression implements Model{
 	
 	private Vector weights;
 	private float bias;

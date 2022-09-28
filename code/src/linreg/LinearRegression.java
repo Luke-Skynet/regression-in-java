@@ -1,9 +1,11 @@
 package linreg;
 
+import interfaces.Model;
+
 import java.io.*;
 import math.Vector;
 
-public class LinearRegression {
+public class LinearRegression implements Model{
 	
 	private Vector weights;
 	private float bias;
