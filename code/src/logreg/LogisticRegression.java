@@ -1,10 +1,12 @@
 package logreg;
 
+import interfaces.Model;
+
 import java.io.*;
 import math.Vector;
 import math.Functions;
 
-public class LogisticRegression {
+public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	
 	private Vector weights;
 	private float bias;
@@ -18,11 +20,13 @@ public class LogisticRegression {
 		this.weights = thoseWeights;
 		this.bias = bias;
 	}
-	
-	public float compute(Vector x) {
+
+	@Override
+	public Float compute(Vector x) {
 		return Functions.sigmoid(weights.dot(x) + bias);
 	}
 	
+	@Override
 	public void train(LogRegData[] training, LogRegData[] testing, float learningRate, int epochs, boolean verbose){
 		
 		for (int e = 0; e < epochs; e++) {
@@ -31,7 +35,7 @@ public class LogisticRegression {
 			
 			if (verbose) {
 				if (e % 100 == 0)
-					System.out.println("Iteration: " + e + " Loss: " + this.getLogLoss(testing));
+					System.out.println("Iteration: " + e + " Loss: " + this.getLoss(testing));
 			}
 		}
 		
@@ -74,7 +78,7 @@ public class LogisticRegression {
 				
 				if (verbose) {
 					if (iteration % 100 == 0)
-						System.out.println("Iteration: " + iteration + " Loss: " + this.getLogLoss(testing));
+						System.out.println("Iteration: " + iteration + " Loss: " + this.getLoss(testing));
 				}
 				
 				if (iteration++ >= iterations) 
@@ -86,7 +90,7 @@ public class LogisticRegression {
 				
 				if (verbose) {
 					if (iteration % 100 == 0)
-						System.out.println("Iteration: " + iteration + " Loss: " + this.getLogLoss(testing));
+						System.out.println("Iteration: " + iteration + " Loss: " + this.getLoss(testing));
 				}
 				
 				if (iteration++ >= iterations) 
@@ -107,7 +111,7 @@ public class LogisticRegression {
 			
 			float error = yi - this.compute(xi);
 
-			Vector dwi = xi.timesScalar(-1 * error);
+			Vector dwi = xi.scaled(-1 * error);
 			float dbi = -1 * error;
 				
 			deltaWeights = deltaWeights.plus(dwi);
@@ -117,11 +121,12 @@ public class LogisticRegression {
 		deltaWeights.scale((float) (1.0 / training.length));
 		deltaBias /= (float) training.length;
 		
-		weights = weights.minus(deltaWeights.timesScalar(learningRate));
+		weights = weights.minus(deltaWeights.scaled(learningRate));
 		bias = bias - (deltaBias * learningRate);
 	}
 	
-	public double getLogLoss(LogRegData[] examples) {
+	@Override
+	public double getLoss(LogRegData[] examples) {
 		
 		double loss = 0.0;
 		
@@ -129,8 +134,11 @@ public class LogisticRegression {
 			Vector xi = examples[i].getData();
 			float yi = examples[i].getLabelVal();
 			
-			loss += (-1 * yi * Math.log(this.compute(xi)) ) + 
-				   ( -1 * (1.0f-yi) * Math.log(1.0f - this.compute(xi)) );
+			if(yi == 1.0f){
+				loss += -1 * Math.log(this.compute(xi));
+			} else {
+				loss += -1 * Math.log(1.0f - this.compute(xi));
+			}
 		}
 		
 		return loss;

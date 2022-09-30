@@ -1,8 +1,10 @@
 package logreg;
 
+import interfaces.Sample;
+
 import math.Vector;
 
-public class LogRegData {
+public class LogRegData implements Sample<Vector, Boolean>{
 	
 	private final Vector data;
 	private final boolean label;
@@ -13,17 +15,16 @@ public class LogRegData {
 	}
 	public LogRegData(Vector data, float label) {
 		this.data = data;
-		this.label = label > .5;
+		this.label = label > (float) Math.random();
 	}
+
+	@Override
 	public Vector getData() {
 		return data;
 	}
 	
-	public float getDataValue(int i) {
-		return data.getValue(i);
-	}
-	
-	public boolean getLabel(){
+	@Override
+	public Boolean getLabel(){
 		return label;
 	}
 	

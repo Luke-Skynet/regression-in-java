@@ -163,7 +163,7 @@ public class Vector {
 		}
 	}
 	
-	public Vector timesScalar(float scalar) {
+	public Vector scaled(float scalar) {
 		
 		Vector result = new Vector(arr.length);
 		

@@ -1,9 +1,11 @@
 package linreg;
 
+import interfaces.Model;
+
 import java.io.*;
 import math.Vector;
 
-public class LinearRegression {
+public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	
 	private Vector weights;
 	private float bias;
@@ -18,10 +20,12 @@ public class LinearRegression {
 		this.bias = bias;
 	}
 	
-	public float compute(Vector x) {
+	@Override
+	public Float compute(Vector x) {
 		return weights.dot(x) + bias;
 	}
-	
+
+	@Override
 	public void train(LinRegData[] training, LinRegData[] testing, float learningRate, int epochs, boolean verbose){
 
 		for (int e = 0; e < epochs; e++) {
@@ -106,7 +110,7 @@ public class LinearRegression {
 				
 			float error = yi - this.compute(xi);
 
-			Vector dwi = xi.timesScalar(-2 * error);
+			Vector dwi = xi.scaled(-2 * error);
 			float dbi = (-2 * error);
 				
 			deltaWeights = deltaWeights.plus(dwi);
@@ -116,10 +120,11 @@ public class LinearRegression {
 		deltaWeights.scale((float) (1.0 / training.length));
 		deltaBias /= (float) training.length;
 		
-		weights = weights.minus(deltaWeights.timesScalar(learningRate));
+		weights = weights.minus(deltaWeights.scaled(learningRate));
 		bias = bias - (deltaBias * learningRate);
 	}
 	
+	@Override
 	public double getLoss(LinRegData[] examples) {
 	
 		double loss = 0.0;
