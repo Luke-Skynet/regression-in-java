@@ -20,10 +20,12 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		this.bias = bias;
 	}
 	
+	@Override
 	public Float compute(Vector x) {
 		return weights.dot(x) + bias;
 	}
 
+	@Override
 	public void train(LinRegData[] training, LinRegData[] testing, float learningRate, int epochs, boolean verbose){
 
 		for (int e = 0; e < epochs; e++) {
@@ -122,6 +124,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		bias = bias - (deltaBias * learningRate);
 	}
 	
+	@Override
 	public double getLoss(LinRegData[] examples) {
 	
 		double loss = 0.0;

@@ -14,18 +14,12 @@ public class LinRegData implements Sample<Vector, Float>{
 		this.label = label;
 	}
 	
+	@Override
 	public Vector getData() {
 		return data;
 	}
-	
-	public int getDim() {
-		return data.getLength();
-	}
-	
-	public float getDataValue(int i) {
-		return data.getValue(i);
-	}
-	
+
+	@Override
 	public Float getLabel(){
 		return label;
 	}

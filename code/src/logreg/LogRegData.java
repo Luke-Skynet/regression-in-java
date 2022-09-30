@@ -17,14 +17,13 @@ public class LogRegData implements Sample<Vector, Boolean>{
 		this.data = data;
 		this.label = label > (float) Math.random();
 	}
+
+	@Override
 	public Vector getData() {
 		return data;
 	}
 	
-	public float getDataValue(int i) {
-		return data.getValue(i);
-	}
-	
+	@Override
 	public Boolean getLabel(){
 		return label;
 	}

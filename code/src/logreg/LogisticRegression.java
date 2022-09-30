@@ -20,11 +20,13 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 		this.weights = thoseWeights;
 		this.bias = bias;
 	}
-	
+
+	@Override
 	public Float compute(Vector x) {
 		return Functions.sigmoid(weights.dot(x) + bias);
 	}
 	
+	@Override
 	public void train(LogRegData[] training, LogRegData[] testing, float learningRate, int epochs, boolean verbose){
 		
 		for (int e = 0; e < epochs; e++) {
@@ -123,6 +125,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 		bias = bias - (deltaBias * learningRate);
 	}
 	
+	@Override
 	public double getLoss(LogRegData[] examples) {
 		
 		double loss = 0.0;
