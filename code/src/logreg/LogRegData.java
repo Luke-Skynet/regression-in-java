@@ -4,7 +4,7 @@ import interfaces.Sample;
 
 import math.Vector;
 
-public class LogRegData implements Sample{
+public class LogRegData implements Sample<Vector, Boolean>{
 	
 	private final Vector data;
 	private final boolean label;
@@ -25,7 +25,7 @@ public class LogRegData implements Sample{
 		return data.getValue(i);
 	}
 	
-	public boolean getLabel(){
+	public Boolean getLabel(){
 		return label;
 	}
 	

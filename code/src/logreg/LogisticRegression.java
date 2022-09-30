@@ -6,7 +6,7 @@ import java.io.*;
 import math.Vector;
 import math.Functions;
 
-public class LogisticRegression implements Model{
+public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	
 	private Vector weights;
 	private float bias;
@@ -21,7 +21,7 @@ public class LogisticRegression implements Model{
 		this.bias = bias;
 	}
 	
-	public float compute(Vector x) {
+	public Float compute(Vector x) {
 		return Functions.sigmoid(weights.dot(x) + bias);
 	}
 	
@@ -33,7 +33,7 @@ public class LogisticRegression implements Model{
 			
 			if (verbose) {
 				if (e % 100 == 0)
-					System.out.println("Iteration: " + e + " Loss: " + this.getLogLoss(testing));
+					System.out.println("Iteration: " + e + " Loss: " + this.getLoss(testing));
 			}
 		}
 		
@@ -76,7 +76,7 @@ public class LogisticRegression implements Model{
 				
 				if (verbose) {
 					if (iteration % 100 == 0)
-						System.out.println("Iteration: " + iteration + " Loss: " + this.getLogLoss(testing));
+						System.out.println("Iteration: " + iteration + " Loss: " + this.getLoss(testing));
 				}
 				
 				if (iteration++ >= iterations) 
@@ -88,7 +88,7 @@ public class LogisticRegression implements Model{
 				
 				if (verbose) {
 					if (iteration % 100 == 0)
-						System.out.println("Iteration: " + iteration + " Loss: " + this.getLogLoss(testing));
+						System.out.println("Iteration: " + iteration + " Loss: " + this.getLoss(testing));
 				}
 				
 				if (iteration++ >= iterations) 
@@ -109,7 +109,7 @@ public class LogisticRegression implements Model{
 			
 			float error = yi - this.compute(xi);
 
-			Vector dwi = xi.timesScalar(-1 * error);
+			Vector dwi = xi.scaled(-1 * error);
 			float dbi = -1 * error;
 				
 			deltaWeights = deltaWeights.plus(dwi);
@@ -119,11 +119,11 @@ public class LogisticRegression implements Model{
 		deltaWeights.scale((float) (1.0 / training.length));
 		deltaBias /= (float) training.length;
 		
-		weights = weights.minus(deltaWeights.timesScalar(learningRate));
+		weights = weights.minus(deltaWeights.scaled(learningRate));
 		bias = bias - (deltaBias * learningRate);
 	}
 	
-	public double getLogLoss(LogRegData[] examples) {
+	public double getLoss(LogRegData[] examples) {
 		
 		double loss = 0.0;
 		

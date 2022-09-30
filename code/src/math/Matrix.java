@@ -211,7 +211,7 @@ public class Matrix {
 		}
 	}
 	
-	public Matrix timesScalar(float scalar) {
+	public Matrix scaled(float scalar) {
 		
 		int columnsize = this.getColumnSize();
 		int rowsize = this.getRowSize();

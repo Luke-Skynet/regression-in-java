@@ -4,7 +4,7 @@ import interfaces.Sample;
 
 import math.Vector;
 
-public class LinRegData implements Sample{
+public class LinRegData implements Sample<Vector, Float>{
 	
 	private final Vector data;
 	private final float label;
@@ -26,7 +26,7 @@ public class LinRegData implements Sample{
 		return data.getValue(i);
 	}
 	
-	public float getLabel(){
+	public Float getLabel(){
 		return label;
 	}
 
