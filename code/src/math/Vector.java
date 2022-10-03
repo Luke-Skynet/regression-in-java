@@ -53,7 +53,7 @@ public class Vector {
 		}
 	}
 	
-	public String asString() {
+	public String toString() {
 		
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < this.getLength(); i++)

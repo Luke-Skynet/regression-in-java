@@ -15,8 +15,8 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		this.bias = 0;
 	}
 	
-	public LinearRegression(Vector thoseWeights, float bias) {
-		this.weights = thoseWeights;
+	public LinearRegression(Vector weights, float bias) {
+		this.weights = weights;
 		this.bias = bias;
 	}
 	
@@ -174,7 +174,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		
 			PrintWriter writer = new PrintWriter(file, "utf-8");
 		
-			writer.println(this.weights.asString());
+			writer.println(this.weights.toString());
 			writer.print(this.bias);
 		
 			writer.close();

@@ -16,8 +16,8 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 		this.bias = 0.0f;
 	}
 	
-	public LogisticRegression(Vector thoseWeights, float bias) {
-		this.weights = thoseWeights;
+	public LogisticRegression(Vector weights, float bias) {
+		this.weights = weights;
 		this.bias = bias;
 	}
 
@@ -176,7 +176,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 		
 			PrintWriter writer = new PrintWriter(file, "utf-8");
 		
-			writer.println(this.weights.asString());
+			writer.println(this.weights.toString());
 			writer.print(this.bias);
 		
 			writer.close();

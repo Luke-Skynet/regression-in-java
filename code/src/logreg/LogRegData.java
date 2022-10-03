@@ -15,7 +15,7 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	}
 	public LogRegData(Vector data, float label) {
 		this.data = data;
-		this.label = label > (float) Math.random();
+		this.label = label > .5f;
 	}
 
 	@Override

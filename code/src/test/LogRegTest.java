@@ -13,13 +13,15 @@ public class LogRegTest {
 		
 		int dimensions = 100;
 		
-		int iterations = 30000;
-		int batchsize = 1000;
-		float learningRate = 0.05f;
+		int iterations = 10000;
+		int batchsize = 500;
+		float learningRate = 0.1f;
 		
 		int trainingSize = 5000;
 		int testingSize = 1000;
 		
+		float noiseScale = .1f;
+
 		boolean verbose = true;
 		
 		//Generate Target Parameters
@@ -39,7 +41,7 @@ public class LogRegTest {
 			trainingData[i] = new Vector(dimensions);
 			trainingData[i].setValuesRandom();
 			trainingData[i].scale(10);
-			trainingLabels[i] = computeTestLabel(trainingData[i], targetWeights, targetBias, 0);
+			trainingLabels[i] = computeTestLabel(trainingData[i], targetWeights, targetBias, noiseScale);
 		}
 		LogRegData[] trainingExamples = LogRegData.format(trainingData, trainingLabels);
 		
@@ -52,7 +54,7 @@ public class LogRegTest {
 			testingData[i] = new Vector(dimensions);
 			testingData[i].setValuesRandom();
 			testingData[i].scale(10);
-			testingLabels[i] = computeTestLabel(testingData[i], targetWeights, targetBias, 0);
+			testingLabels[i] = computeTestLabel(testingData[i], targetWeights, targetBias, noiseScale);
 		}
 		LogRegData[] testingExamples = LogRegData.format(testingData, testingLabels);
 		
@@ -72,12 +74,13 @@ public class LogRegTest {
 		System.out.println("\n" + targetBias + "  " + bias);
 	}
 
-	public static float computeTestLabel(Vector input, Vector targetWeights, float targetBias, double scaleNoise) {
-	
-		float result = Functions.sigmoid((targetWeights).dot(input) + targetBias);
-		result += (float) ( ( Math.random() - .5 ) * scaleNoise );
-	
-		return result;
+	public static float computeTestLabel(Vector input, Vector targetWeights, float targetBias, float noiseScale) {
+		
+		float mxb = targetWeights.dot(input) + targetBias;
+		float noise = 1.0f - 2 * noiseScale * (float) Math.random();
+
+		return Functions.sigmoid(mxb * noise);
+
 	}
 
 }

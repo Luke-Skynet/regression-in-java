@@ -24,6 +24,8 @@ public class LinRegTest {
 		int trainingSize = 5000;
 		int testingSize = 1000;
 		
+		float noiseScale = .01f;
+
 		boolean verbose = true;
 		
 		//Generate Target Parameters
@@ -43,7 +45,7 @@ public class LinRegTest {
 			trainingData[i] = new Vector(dimensions);
 			trainingData[i].setValuesRandom();
 			trainingData[i].scale(10);
-			trainingLabels[i] = computeTestLabel(trainingData[i], targetWeights, targetBias, 0);
+			trainingLabels[i] = computeTestLabel(trainingData[i], targetWeights, targetBias, noiseScale);
 		}
 		LinRegData[] trainingExamples = LinRegData.format(trainingData, trainingLabels);
 		
@@ -56,7 +58,7 @@ public class LinRegTest {
 			testingData[i] = new Vector(dimensions);
 			testingData[i].setValuesRandom();
 			testingData[i].scale(10);
-			testingLabels[i] = computeTestLabel(testingData[i], targetWeights, targetBias, 0);
+			testingLabels[i] = computeTestLabel(testingData[i], targetWeights, targetBias, noiseScale);
 		}
 		LinRegData[] testingExamples = LinRegData.format(testingData, testingLabels);
 		
@@ -103,10 +105,10 @@ public class LinRegTest {
 		*/
 	}
 
-	public static float computeTestLabel(Vector input, Vector targetWeights, float targetBias, double scaleNoise) {
+	public static float computeTestLabel(Vector input, Vector targetWeights, float targetBias, float noiseScale) {
 	
 		float result = targetWeights.dot(input) + targetBias;
-		result += (float) ( ( Math.random() - .5 ) * scaleNoise );
+		result += (float) ( result * 2 * ( Math.random() - .5 ) * noiseScale);
 	
 		return result;
 
