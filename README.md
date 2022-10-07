@@ -1,2 +1,2 @@
 # MLDS-in-Java
-a pet project where I learn ML/DS from scratch using Java
+This library provides Vectors, Matrices, common math functions, as well as linear and logistic regression
