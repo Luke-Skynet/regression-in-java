@@ -72,7 +72,9 @@ public class Matrix {
 		
 		return result;
 	}
-	
+	public Matrix deepCopy(){
+		return new Matrix(this.arr);
+	}
 	//printer
 	
 	public void print() {

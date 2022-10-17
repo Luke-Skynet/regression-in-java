@@ -7,8 +7,8 @@ import math.Vector;
 import java.io.*;
 
 /**
- * This is your standard multilinear regression. R^n -> R. 
- * Except instead of using least squares to optimize, it uses gradient descent because it is cooler
+ * This provides multilinear regression. R^n -> R. 
+ * Instead of using least squares to optimize, it uses gradient descent.
  */
 public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	
@@ -16,15 +16,16 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	private float bias;
 	
 	/**
-	 * constructor where only the dimension is given and all values are set to default 0. Good for when model will be trained
+	 * Constructor where only the dimension is given and all values are set to default 0. Good for when model will be trained.
 	 * @param dimensions - the number of features the model takes in and transforms linearly (Y = wx1 + wx2 + wxn)
 	 */
 	public LinearRegression(int dimensions) {
 		this.weights = new Vector(dimensions);
 		this.bias = 0;
 	}
+
 	/**
-	 * constructor where all the weights and bias are initialized to specific input. This is good for when parameters are already known
+	 * Constructor where all the weights and bias are initialized to specific input. This is good for when parameters are already known.
 	 * to and extent. 
 	 * @param weights - the weights that are deeply copied and used as parameters 
 	 * @param bias - the bias / intecept that is copied
@@ -33,8 +34,9 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		this.weights = weights.deepCopy();
 		this.bias = bias;
 	}
+
 	/**
-	 * this is the main inference / computation of the linear function
+	 * This is the main inference / computation of the linear function.
 	 * @param x this is the input vector X
 	 * @return scalar Y = W*X + b
 	 */
@@ -44,7 +46,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 	
 	/**
-	 * training method that looks at every data point in the training set before updating weights during steps (nonstochastic)
+	 * Training method that looks at every data point in the training set before updating weights during steps (nonstochastic)
 	 * @param training - an array of LinRegData (vector, float) objects that the model uses for weight updating
 	 * @param testing - an array of LinRegData (vector, float) objects that is used to display loss when verbose is true 
 	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .01 and .1
@@ -65,6 +67,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		}
 		
 	}
+
 	/**
 	 * training method that uses batches of data samples to update weights at every step (stochastic gradient descent)
 	 * @param training - an array of LinRegData (vector, float) objects that the model uses for weight updating
@@ -131,6 +134,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 			}
 		}
 	}
+
 	/**
 	 * this is an internal method for taking single training step based off of a batch of samples
 	 * @param training - array of training samples to calculate gradients
@@ -184,6 +188,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		
 		return loss;
 	}
+
 	/**
 	 * this returns a defensive copy of the model's weights
 	 * @return Vector - the weights of the model
@@ -197,6 +202,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 			
 		return result;
 	}
+
 	/**
 	 * this returns a single floating point value of a specific weight by index
 	 * @param i the index of the weight
@@ -205,6 +211,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	public float getWeightValue(int i) {
 		return weights.getValue(i);
 	}
+	
 	/**
 	 * this returns the bias / intecept of the model's linear function
 	 * @return float - the b part of y = W*X + b
@@ -212,6 +219,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	public float getBias() {
 		return bias;
 	}
+	
 	/**
 	 * this records the weights and bias of the model in a .txt file
 	 * @param name - the directory / file name

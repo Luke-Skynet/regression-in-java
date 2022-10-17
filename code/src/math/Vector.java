@@ -1,5 +1,7 @@
 package math;
 
+import java.util.Arrays;
+
 public class Vector {
 
 	private final float[] arr;
@@ -26,7 +28,10 @@ public class Vector {
 	public float getValue(int i) {
 		return arr[i];
 	}
-	
+	public Vector deepCopy(){
+		return new Vector(this.arr);
+	}
+
 	//Mutators
 	
 	public void setValue(int i, float value) {

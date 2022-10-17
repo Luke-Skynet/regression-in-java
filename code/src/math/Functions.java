@@ -4,10 +4,19 @@ public class Functions {
 	
 	//Sigmoid Function (individual and Vector)
 	
+	/**
+	 * 
+	 * @param x
+	 * @return 1 / (1 + e^-x)
+	 */
 	public static float sigmoid(float x) {
 		return 1 / (float) (1 + Math.exp(-x));
 	}
-
+	/**
+	 * 
+	 * @param that
+	 * @return 1 / (1 + e^-x)
+	 */
 	public static Vector sigmoid(Vector that) {
 		
 		Vector vector = new Vector(that.getLength());
@@ -18,11 +27,19 @@ public class Functions {
 		
 		return vector;
 	}
-
+	/**
+	 * 
+	 * @param x
+	 * @return sigmoid(x)*(1-sigmoid(x))
+	 */
 	public static float derSigmoid(float x){
 		return sigmoid(x) * (1.0f - sigmoid(x));
 	}
-
+	/**
+	 * 
+	 * @param that
+	 * @return sigmoid(x)*(1-sigmoid(x))
+	 */
 	public static Vector derSigmoid(Vector that){
 		Vector vector = new Vector(that.getLength());
 		
@@ -34,11 +51,19 @@ public class Functions {
 	}
 
 	//Tanh Function (individual and Vector)
-	
+	/**
+	 * 
+	 * @param x
+	 * @return exp(x) - exp(-x) / exp(x) + exp(-x)
+	 */
 	public static float tanh(float x) {
 		return (float) Math.tanh(x);
 	}
-	
+	/**
+	 * 
+	 * @param that
+	 * @return exp(x) - exp(-x) / exp(x) + exp(-x)
+	 */
 	public static Vector tanh(Vector that) {
 		
 		Vector vector = new Vector(that.getLength());
@@ -49,11 +74,19 @@ public class Functions {
 		
 		return vector;
 	}
-
+	/**
+	 * 
+	 * @param x
+	 * @return 1 - tanh^2(x)
+	 */
 	public static float derTanh(float x) {
 		return (float) (1.0 - Math.pow(Math.tanh(x), 2));
 	}
-
+	/**
+	 * 
+	 * @param that
+	 * @return 1 - tanh^2(x)
+	 */
 	public static Vector derTanh(Vector that) {
 		
 		Vector vector = new Vector(that.getLength());
@@ -66,11 +99,19 @@ public class Functions {
 	}
 
 	//ReLU Function (individual and Vector)
-	
+	/**
+	 * 
+	 * @param x
+	 * @return max(0,x)
+	 */
 	public static float ReLU(float x) {
 		return Math.max(x, 0);
 	}
-	
+	/**
+	 * 
+	 * @param that
+	 * @return max(0,x)
+	 */
 	public static Vector ReLU(Vector that) {
 		
 		Vector vector = new Vector(that.getLength());
@@ -81,7 +122,11 @@ public class Functions {
 		
 		return vector;
 	}
-
+	/**
+	 * 
+	 * @param x
+	 * @return .5 sign(x) + .5 (0,1)
+	 */
 	public static float derReLU(float x){
 		if (x >= 0){
 			return 1.0f;
@@ -89,7 +134,11 @@ public class Functions {
 			return 0.0f;
 		}
 	}
-
+	/**
+	 * 
+	 * @param that
+	 * @return .5 sign(x) + .5 (0,1)
+	 */
 	public static Vector derReLU(Vector that) {
 		
 		Vector vector = new Vector(that.getLength());
@@ -102,11 +151,19 @@ public class Functions {
 	}
 
 	//Swish Function (individual and Vector)
-	
+	/**
+	 * 
+	 * @param x
+	 * @return x / (1 + e^-x)
+	 */
 	public static float swish(float x) {
 		return x / (float) (1 + Math.exp(-x));
 	}
-	
+	/**
+	 * 
+	 * @param that
+	 * @return x / (1 + e^-x)
+	 */
 	public static Vector swish(Vector that) {
 		
 		Vector vector = new Vector(that.getLength());
@@ -117,11 +174,19 @@ public class Functions {
 		
 		return vector;
 	}
-
+	/**
+	 * 
+	 * @param x
+	 * @return sig(x) + swish(x)*(1-sig(x))
+	 */
 	public static float derSwish(float x) {
 		return sigmoid(x) + swish(x)*(1.0f - sigmoid(x));
 	}
-
+	/**
+	 * 
+	 * @param that
+	 * @return sig(x) + swish(x)*(1-sig(x))
+	 */
 	public static Vector derSwish(Vector that) {
 		
 		Vector vector = new Vector(that.getLength());
@@ -135,6 +200,11 @@ public class Functions {
 
 	//Softmax Function (just Vector)
 	
+	/**
+	 * 
+	 * @param that
+	 * @return e^zi / sum(e^zi) for i in vector
+	 */
 	public static Vector softMax(Vector that) {
 		
 		Vector vector = new Vector(that.getLength());
@@ -155,6 +225,11 @@ public class Functions {
 		return vector;
 	}
 
+	/**
+	 * 
+	 * @param that
+	 * @return matrix( i==j -> sm(i)(1-sm(i)), else (i,j) -> -sm(i)sm(j) )
+	 */
 	public static Matrix derSoftMax(Vector that){
 
 		int dims = that.getLength();
