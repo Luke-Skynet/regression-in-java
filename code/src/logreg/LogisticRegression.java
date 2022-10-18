@@ -7,8 +7,8 @@ import math.Vector;
 import math.Functions;
 
 /**
- * This provides multifeature logistic regresion R^N -> (0,1)
- * uses SGD to optimize parameters
+ * This provides multifeature logistic regresion R^N -> (0,1),
+ * uses SGD to optimize parameters.
  */
 public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	
@@ -24,8 +24,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 		this.bias = 0.0f;
 	}
 	/**
-	 * Constructor where all the weights and bias are initialized to specific input. This is good for when parameters are already known.
-	 * to and extent. 
+	 * Constructor where all the weights and bias are initialized to specific input. This is good for when parameters are already estimated.
 	 * @param weights - the weights that are deeply copied and used as parameters 
 	 * @param bias - the bias / intecept that is copied
 	 */
@@ -44,7 +43,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	}
 
 	/**
-	 * Training method that looks at every data point in the training set before updating weights during steps (nonstochastic)
+	 * Training method that looks at every data point in the training set before updating weights during steps (nonstochastic).
 	 * @param training - an array of LogRegData (vector, float) objects that the model uses for weight updating
 	 * @param testing - an array of LogRegData (vector, float) objects that is used to display loss when verbose is true 
 	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .05 and .1
@@ -67,7 +66,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	}
 
 	/**
-	 * training method that uses batches of data samples to update weights at every step (stochastic gradient descent)
+	 * Training method that uses batches of data samples to update weights at every step (stochastic gradient descent).
 	 * @param training - an array of LogRegData (vector, float) objects that the model uses for weight updating
 	 * @param testing - an array of LogRegData (vector, float) objects that is used to display loss when verbose is true 
 	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .01 and .1
@@ -133,7 +132,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 		}
 	}
 	/**
-	 * this is an internal method for taking single training step based off of a batch of samples
+	 * This is an internal method for taking single training step based off of a batch of samples.
 	 * @param training - array of training samples to calculate gradients
 	 * @param learningRate - floating point scalar multiplier used to scale gradient before adding them to wieghts and bias
 	 */
@@ -164,9 +163,9 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	}
 	
 	/**
-	 * this calculates the crossentropy/log loss of the predicted values yhat = sigmoid(mx+b) and ground truth (y)
-	 * @param examples - LinRegData array of samples (Vector, float)
-	 * @return loss - double precision floating point number
+	 * This calculates the cross entropy/log loss between the predicted values y' = sigmoid(W*X+b) and ground truth (y).
+	 * @param examples - LogRegData array of samples (Vector, float)
+	 * @return double - Cross entropy between y' and y
 	 */
 	@Override
 	public double getLoss(LogRegData[] examples) {
@@ -175,9 +174,9 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 		
 		for(int i = 0; i < examples.length; i++) {
 			Vector xi = examples[i].getData();
-			float yi = examples[i].getLabelVal();
+			boolean yi = examples[i].getLabel();
 			
-			if(yi == 1.0f){
+			if(yi){
 				loss += -1 * Math.log(this.compute(xi));
 			} else {
 				loss += -1 * Math.log(1.0f - this.compute(xi));
@@ -187,21 +186,15 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 		return loss;
 	}
 	/**
-	 * this returns a defensive copy of the model's weights
+	 * This returns a defensive copy of the model's weights,
 	 * @return Vector - the weights of the model
 	 */
 	public Vector getWeights() {
-		
-		Vector result = new Vector(weights.getLength());
-		
-		for (int i = 0; i < result.getLength(); i++)
-			result.setValue(i, weights.getValue(i));
-		
-		return result;
+		return this.weights.deepCopy();
 	}
 
 	/**
-	 * this returns a single floating point value of a specific weight by index
+	 * This returns a single floating point value of a specific weight by index.
 	 * @param i the index of the weight
 	 * @return float - the weight value
 	 */
@@ -210,7 +203,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	}
 	
 	/**
-	 * this returns the bias / shift of the model's logistic function
+	 * This returns the bias / shift of the model's logistic function.
 	 * @return float - the b part of y = sigmoid(W*X + b)
 	 */
 	public float getBias() {
@@ -218,7 +211,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	}
 
 	/**
-	 * this records the weights and bias of the model in a .txt file
+	 * This records the weights and bias of the model in a .txt file.
 	 * @param name - the directory / file name
 	 */
 	public void save(String name){
@@ -246,7 +239,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	}
 
 	/**
-	 * this forces a weight to a specified value for if you ever need it
+	 * This forces a weight to a specified value for if you ever need it.
 	 * @param i the index of the weight
 	 * @param value - that value that the weight is forced to
 	 */
@@ -255,7 +248,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	}
 
 	/**
-	 * this forces the bias to a specified value if you ever need it
+	 * This forces the bias to a specified value if you ever need it.
 	 * @param value - the value that the weight is forced to
 	 */
 	public void forceBiasValue(float value) {

@@ -1,12 +1,17 @@
 package math;
 
+/**
+ * This class provides static functions of those commonly used in Neural Nets, along with their derivatives.
+ * Each function has a scalar version and a vector version, (except for softmax).
+ * Vectors computations are always performed element - element wise.
+ */
 public class Functions {
 	
 	//Sigmoid Function (individual and Vector)
 	
 	/**
 	 * 
-	 * @param x
+	 * @param x - input variable
 	 * @return 1 / (1 + e^-x)
 	 */
 	public static float sigmoid(float x) {
@@ -14,8 +19,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param that
-	 * @return 1 / (1 + e^-x)
+	 * @param that - input vector(x^n)
+	 * @return that(xn) = 1 / (1 + e^-xn)
 	 */
 	public static Vector sigmoid(Vector that) {
 		
@@ -29,7 +34,7 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param x
+	 * @param x - input variable
 	 * @return sigmoid(x)*(1-sigmoid(x))
 	 */
 	public static float derSigmoid(float x){
@@ -37,8 +42,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param that
-	 * @return sigmoid(x)*(1-sigmoid(x))
+	 * @param that - input vector(x^n)
+	 * @return that(xn) = sigmoid(x)*(1-sigmoid(x))
 	 */
 	public static Vector derSigmoid(Vector that){
 		Vector vector = new Vector(that.getLength());
@@ -53,7 +58,7 @@ public class Functions {
 	//Tanh Function (individual and Vector)
 	/**
 	 * 
-	 * @param x
+	 * @param x - input variable
 	 * @return exp(x) - exp(-x) / exp(x) + exp(-x)
 	 */
 	public static float tanh(float x) {
@@ -61,8 +66,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param that
-	 * @return exp(x) - exp(-x) / exp(x) + exp(-x)
+	 * @param that - input vector(x^n)
+	 * @return that(xn) = exp(x) - exp(-x) / exp(x) + exp(-x)
 	 */
 	public static Vector tanh(Vector that) {
 		
@@ -76,7 +81,7 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param x
+	 * @param x - input variable
 	 * @return 1 - tanh^2(x)
 	 */
 	public static float derTanh(float x) {
@@ -84,8 +89,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param that
-	 * @return 1 - tanh^2(x)
+	 * @param that - input vector(x^n)
+	 * @return that(xn) = 1 - tanh^2(x)
 	 */
 	public static Vector derTanh(Vector that) {
 		
@@ -101,7 +106,7 @@ public class Functions {
 	//ReLU Function (individual and Vector)
 	/**
 	 * 
-	 * @param x
+	 * @param x - input variable
 	 * @return max(0,x)
 	 */
 	public static float ReLU(float x) {
@@ -109,8 +114,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param that
-	 * @return max(0,x)
+	 * @param that - input vector(x^n)
+	 * @return that(xn) = max(0,x)
 	 */
 	public static Vector ReLU(Vector that) {
 		
@@ -124,8 +129,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param x
-	 * @return .5 sign(x) + .5 (0,1)
+	 * @param x - input vector(x^n)
+	 * @return .5 sign(x) + .5 -- (0,1)
 	 */
 	public static float derReLU(float x){
 		if (x >= 0){
@@ -136,8 +141,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param that
-	 * @return .5 sign(x) + .5 (0,1)
+	 * @param that - input vector(x^n)
+	 * @return that(xn) = .5 sign(x) + .5 -- (0,1)
 	 */
 	public static Vector derReLU(Vector that) {
 		
@@ -153,7 +158,7 @@ public class Functions {
 	//Swish Function (individual and Vector)
 	/**
 	 * 
-	 * @param x
+	 * @param x - input variable
 	 * @return x / (1 + e^-x)
 	 */
 	public static float swish(float x) {
@@ -161,8 +166,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param that
-	 * @return x / (1 + e^-x)
+	 * @param that - input vector(x^n)
+	 * @return that(xn) = x / (1 + e^-x)
 	 */
 	public static Vector swish(Vector that) {
 		
@@ -176,7 +181,7 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param x
+	 * @param x - input variable
 	 * @return sig(x) + swish(x)*(1-sig(x))
 	 */
 	public static float derSwish(float x) {
@@ -184,8 +189,8 @@ public class Functions {
 	}
 	/**
 	 * 
-	 * @param that
-	 * @return sig(x) + swish(x)*(1-sig(x))
+	 * @param that - input vector(x^n)
+	 * @return that(xn) = sig(x) + swish(x)*(1-sig(x))
 	 */
 	public static Vector derSwish(Vector that) {
 		
@@ -202,8 +207,8 @@ public class Functions {
 	
 	/**
 	 * 
-	 * @param that
-	 * @return e^zi / sum(e^zi) for i in vector
+	 * @param that - input vector(x^n)
+	 * @return that(zi) = e^zi / sum(e^zi) for i in vector
 	 */
 	public static Vector softMax(Vector that) {
 		
@@ -227,8 +232,8 @@ public class Functions {
 
 	/**
 	 * 
-	 * @param that
-	 * @return matrix( i==j -> sm(i)(1-sm(i)), else (i,j) -> -sm(i)sm(j) )
+	 * @param that - input vector(x^n)
+	 * @return matrix( (i, j = i) -> sm(i)(1-sm(i)), else (i,j) -> -sm(i)sm(j) )
 	 */
 	public static Matrix derSoftMax(Vector that){
 

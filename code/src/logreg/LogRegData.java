@@ -15,7 +15,7 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	private final boolean label;
 	
 	/**
-	 * basic constructor with the data and label
+	 * Basic constructor with the data and label.
 	 * @param data - Vector (X)
 	 * @param label - boolean (Y)
 	 */
@@ -25,7 +25,7 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	}
 
 	/**
-	 * another constructor with the data and label as a float
+	 * Another constructor with the data and label as a float.
 	 * @param data - Vector (X)
 	 * @param label - float to boolean true if > .f
 	 */
@@ -65,7 +65,7 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	}
 
 	/**
-	 * this is a static method that reorganizes arrays into logreg data
+	 * This is a static method that reorganizes arrays into logreg data.
 	 * @param xValues two dimensional array where the first index denotes each vector
 	 * @param yValues one dimensional array representing the labels
 	 * @return
@@ -88,8 +88,8 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	}
 	
 	/**
-	 * this is a static method that bundles an array of vectors and an array of labels into an array of logregdata samples,
-	 * each index is buldled together (v[i[,l[i]])
+	 * This is a static method that bundles an array of vectors and an array of labels into an array of logregdata samples,
+	 * each index is buldled together (v[i],l[i]).
 	 * @param vectors - the array of vectors
 	 * @param labels - the array of labels
 	 * @return LogRegData array
@@ -106,7 +106,7 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	}
 	
 	/**
-	 * this is a static method that reorganizes arrays into logreg data
+	 * This is a static method that reorganizes arrays into logreg data.
 	 * @param xValues two dimensional array where the first index denotes each vector
 	 * @param yValues one dimensional array representing the labels
 	 * @return LogRegData array
@@ -129,8 +129,8 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	}
 	
 	/**
-	 * this is a static method that bundles an array of vectors and an array of labels into an array of logregdata samples,
-	 * each index is buldled together (v[i[,l[i]])
+	 * This is a static method that bundles an array of vectors and an array of labels into an array of logregdata samples,
+	 * each index is buldled together (v[i[,l[i]]).
 	 * @param vectors - the array of vectors
 	 * @param labels - the array of labels
 	 * @return LogRegData array

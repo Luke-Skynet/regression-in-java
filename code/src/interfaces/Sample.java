@@ -9,7 +9,7 @@ package interfaces;
 public interface Sample <D, L>{
 
     /**
-     * This gives you the (X) to inference one
+     * This gives you the (X) to do inference on
      * @return Data - implemented type
      */
     public D getData();

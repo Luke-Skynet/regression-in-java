@@ -7,7 +7,7 @@ import math.Vector;
 import java.io.*;
 
 /**
- * This provides multilinear regression. R^n -> R. 
+ * This class provides multilinear regression. R^n -> R. 
  * Instead of using least squares to optimize, it uses gradient descent.
  */
 public class LinearRegression implements Model<Vector, Float, LinRegData>{
@@ -17,7 +17,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	
 	/**
 	 * Constructor where only the dimension is given and all values are set to default 0. Good for when model will be trained.
-	 * @param dimensions - the number of features the model takes in and transforms linearly (Y = wx1 + wx2 + wxn)
+	 * @param dimensions - the number of features the model takes in and transforms linearly (Y = wx1 + wx2 + wxn + b)
 	 */
 	public LinearRegression(int dimensions) {
 		this.weights = new Vector(dimensions);
@@ -25,8 +25,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 
 	/**
-	 * Constructor where all the weights and bias are initialized to specific input. This is good for when parameters are already known.
-	 * to and extent. 
+	 * Constructor where all the weights and bias are initialized to specific input. Good for when parameters are already estimated.
 	 * @param weights - the weights that are deeply copied and used as parameters 
 	 * @param bias - the bias / intecept that is copied
 	 */
@@ -36,8 +35,8 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 
 	/**
-	 * This is the main inference / computation of the linear function.
-	 * @param x this is the input vector X
+	 * The main inference / computation of the linear function
+	 * @param x the input vector X
 	 * @return scalar Y = W*X + b
 	 */
 	@Override
@@ -46,7 +45,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 	
 	/**
-	 * Training method that looks at every data point in the training set before updating weights during steps (nonstochastic)
+	 * Training method that looks at every data point in the training set before updating weights during steps (nonstochastic).
 	 * @param training - an array of LinRegData (vector, float) objects that the model uses for weight updating
 	 * @param testing - an array of LinRegData (vector, float) objects that is used to display loss when verbose is true 
 	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .01 and .1
@@ -69,11 +68,11 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 
 	/**
-	 * training method that uses batches of data samples to update weights at every step (stochastic gradient descent)
+	 * Training method that uses batches of data samples to update weights at every step (stochastic gradient descent).
 	 * @param training - an array of LinRegData (vector, float) objects that the model uses for weight updating
 	 * @param testing - an array of LinRegData (vector, float) objects that is used to display loss when verbose is true 
 	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .01 and .1
-	 * @param iterations - the number of times that the model uses a batch to update its parameters Epochs = iterations * batchsize / training length
+	 * @param iterations - the number of times that the model uses a batch to update its parameters (Epochs = iterations * batchsize / training length)
 	 * @param batchSize - the number of samples the model uses to update its weights during a training step
 	 * @param verbose - display toggle for viewing training process, (setting to false will disable testing data passes / loss computation)
 	 */
@@ -136,7 +135,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 
 	/**
-	 * this is an internal method for taking single training step based off of a batch of samples
+	 * This is an internal method for taking single training step based off of a batch of samples.
 	 * @param training - array of training samples to calculate gradients
 	 * @param learningRate - floating point scalar multiplier used to scale gradient before adding them to wieghts and bias
 	 */
@@ -167,7 +166,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 	
 	/**
-	 * this calculates the mean square error of the predicted values yhat = mx+b and ground truth
+	 * This calculates the mean square error of the predicted values yhat = mx+b and ground truth.
 	 * @param examples - LinRegData array of samples (Vector, float)
 	 * @return loss - double precision floating point number
 	 */
@@ -190,21 +189,16 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 
 	/**
-	 * this returns a defensive copy of the model's weights
+	 * This returns a defensive copy of the model's weights.
 	 * @return Vector - the weights of the model
 	 */
 	public Vector getWeights() {
 		
-		Vector result = new Vector(weights.getLength());
-		
-		for (int i = 0; i < result.getLength(); i++)
-			result.setValue(i, weights.getValue(i));
-			
-		return result;
+		return this.weights.deepCopy();
 	}
 
 	/**
-	 * this returns a single floating point value of a specific weight by index
+	 * This returns a single floating point value of a specific weight by index.
 	 * @param i the index of the weight
 	 * @return float - the weight value
 	 */
@@ -213,7 +207,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 	
 	/**
-	 * this returns the bias / intecept of the model's linear function
+	 * This returns the bias / intecept of the model's linear function.
 	 * @return float - the b part of y = W*X + b
 	 */
 	public float getBias() {
@@ -221,7 +215,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 	
 	/**
-	 * this records the weights and bias of the model in a .txt file
+	 * This records the weights and bias of the model in a .txt file.
 	 * @param name - the directory / file name
 	 */
 	public void save(String name){
@@ -249,7 +243,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 
 	/**
-	 * this forces a weight to a specified value for if you ever need it
+	 * This forces a weight to a specified value for if you ever need it.
 	 * @param i the index of the weight
 	 * @param value - that value that the weight is forced to
 	 */
@@ -258,7 +252,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	}
 
 	/**
-	 * this forces the bias to a specified value if you ever need it
+	 * This forces the bias to a specified value if you ever need it.
 	 * @param value - the value that the weight is forced to
 	 */
 	public void forceBiasValue(float value) {

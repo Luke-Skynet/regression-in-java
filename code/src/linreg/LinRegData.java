@@ -40,10 +40,10 @@ public class LinRegData implements Sample<Vector, Float>{
 		return label;
 	}
 	/**
-	 * this is a static method that reorganizes arrays into logreg data
+	 * This is a static method that reorganizes arrays into linreg data.
 	 * @param xValues two dimensional array where the first index denotes each vector
 	 * @param yValues one dimensional array representing the labels
-	 * @return
+	 * @return LinRegData array
 	 */
 	public static LinRegData[] format(float[][] xValues, float[] yValues) {
 		
@@ -62,8 +62,8 @@ public class LinRegData implements Sample<Vector, Float>{
 		return data;
 	}
 	/**
-	 * this is a static method that bundles an array of vectors and an array of labels into an array of linregdata samples,
-	 * each index is buldled together (v[i[,l[i]])
+	 * This is a static method that bundles an array of vectors and an array of labels into an array of linregdata samples,
+	 * each index is buldled together (v[i[,l[i]]).
 	 * @param vectors - the array of vectors
 	 * @param labels - the array of labels
 	 * @return
