@@ -52,7 +52,11 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	 */
 	@Override
 	public void train(LogRegData[] training, LogRegData[] testing, float learningRate, int epochs, boolean verbose){
-		
+
+		if(verbose){
+			System.out.println("Starting Training: ");
+		}
+
 		for (int e = 0; e < epochs; e++) {
 			
 			this.updateWB(training, learningRate);
@@ -76,6 +80,9 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	 */
 	public void train(LogRegData[] training, LogRegData[] testing, float learningRate, int iterations, int batchSize, boolean verbose){
 		
+		if (verbose){
+			System.out.println("Creating Batches");
+		}
 		if (batchSize > training.length)
 			throw new IllegalArgumentException("Batch size must not exceed data size");
 
@@ -101,6 +108,10 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 			}
 		}
 		
+		if(verbose){
+			System.out.println("Starting Training: ");
+		}
+
 		int iteration = 0;
 		
 		outerloop:

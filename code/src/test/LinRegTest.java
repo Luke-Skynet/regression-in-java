@@ -72,6 +72,7 @@ public class LinRegTest {
 		Vector weights = model.getWeights();
 		float bias = model.getBias();
 		
+		System.out.println("\nTarget - Learned");
 		for (int i = 0; i < dimensions; i++)
 			System.out.println(targetWeights.getValue(i) + "  " + weights.getValue(i));
 
