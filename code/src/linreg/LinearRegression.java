@@ -55,6 +55,10 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	@Override
 	public void train(LinRegData[] training, LinRegData[] testing, float learningRate, int epochs, boolean verbose){
 
+		if(verbose){
+			System.out.println("Starting Training: ");
+		}
+
 		for (int e = 0; e < epochs; e++) {
 			
 			this.updateWB(training, learningRate);
@@ -78,6 +82,9 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	 */
 	public void train(LinRegData[] training, LinRegData[] testing, float learningRate, int iterations, int batchSize, boolean verbose){
 		
+		if (verbose){
+			System.out.println("Creating Batches");
+		}
 		if (batchSize > training.length)
 			throw new IllegalArgumentException("Batch size must not exceed data size");
 		
@@ -103,6 +110,9 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 			}
 		}
 	
+		if (verbose){
+			System.out.println("Starting Training:");
+		}
 		int iteration = 0;
 		
 		outerloop:
