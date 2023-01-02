@@ -331,7 +331,7 @@ public class Matrix {
 		
 		for (int i = 0; i < columnsize; i++) {
 			for (int j = 0; j < rowsize; j++) {
-				result.setValue(j, i, arr[i][j]);
+				result.setValue(i, j, this.getValue(j, i));
 			}
 		}
 		
