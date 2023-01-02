@@ -223,35 +223,66 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 
 	/**
 	 * This records the weights and bias of the model in a .txt file.
-	 * @param name - the directory / file name
+	 * @param filePath - the absolute path for the new file.
+	 * @throws IOException - is thrown if a file already exists at filePath.
 	 */
-	public void save(String name){
-		
-		try {
-		
-			File file = new File(name);
-			
-			if (file.exists()) {
-				throw new Exception();
+	public void save(String filePath) throws IOException {
+
+		File file = new File(filePath);
+
+		//try to create file and error out if not
+		if (!file.createNewFile()){
+			throw new IOException("Cannot save model. File already exists at filePath.");
+		}
+
+		PrintWriter writer = new PrintWriter(file, "utf-8");
+
+		writer.println(this.weights.toString());
+		writer.print(this.bias);
+
+		writer.close();
+	}
+	
+	/**
+	 * This creates a LinearRegression model object using the values from a .txt file
+	 * @param filePath - the absolute path location of the file.
+	 * @throws IOException - is thrown if the file does not exist, or has trouble reading it.
+	 */
+	public static LogisticRegression load(String filePath) throws IOException {
+
+		File file = new File(filePath);
+
+		if (!file.exists()){
+			throw new IOException("Cannot load model. File does not exists at filePath.");
+		}
+
+		BufferedReader br = new BufferedReader(new FileReader(file));
+	
+		String weightString = br.readLine();
+		String biasString = br.readLine();
+
+		br.close();
+
+		try{	
+
+			float bias = Float.parseFloat(biasString);
+
+			String[] tokens = weightString.split("\\s+");
+			Vector weights = new Vector(tokens.length);
+			for (int i = 0; i < tokens.length; i++){
+				weights.setValue(i, Float.parseFloat(tokens[i]));
 			}
-		
-			file.createNewFile();
-		
-			PrintWriter writer = new PrintWriter(file, "utf-8");
-		
-			writer.println(this.weights.toString());
-			writer.print(this.bias);
-		
-			writer.close();
-		
+
+			return new LogisticRegression(weights, bias);
+
 		} catch (Exception e) {
-			System.out.println("Saving failed");
+			throw new IOException("Could not read file contents.");
 		}
 	}
 
 	/**
 	 * This forces a weight to a specified value for if you ever need it.
-	 * @param i the index of the weight
+	 * @param i - the index of the weight
 	 * @param value - that value that the weight is forced to
 	 */
 	public void forceWeightValue(int i, float value) {

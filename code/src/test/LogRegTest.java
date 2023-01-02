@@ -3,11 +3,17 @@ package test;
 import math.Functions;
 import math.Vector;
 import logreg.LogisticRegression;
+
+import java.io.IOException;
+
 import logreg.LogRegData;
 
 public class LogRegTest {
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException{
+
+		boolean exportTest = false;
+		String exportPath = "model.txt";
 
 		//HyperParameters
 		
@@ -73,7 +79,17 @@ public class LogRegTest {
 		for (int i = 0; i < dimensions; i++)
 			System.out.println(targetWeights.getValue(i) + "  " + weights.getValue(i));
 
-		System.out.println("\n" + targetBias + "  " + bias);
+		System.out.println("\n" + targetBias + "  " + bias + "\n");
+
+		if (exportTest){
+
+			model.save(exportPath);
+		
+			LogisticRegression model2 = LogisticRegression.load(exportPath);
+		
+			System.out.println(model2.getLoss(testingExamples));
+			System.out.println(model2.getLoss(trainingExamples));
+		}
 	}
 
 	public static float computeTestLabel(Vector input, Vector targetWeights, float targetBias, float noiseScale) {

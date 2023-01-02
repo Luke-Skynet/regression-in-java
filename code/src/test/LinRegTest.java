@@ -13,6 +13,9 @@ public class LinRegTest {
 
 	public static void main(String[] args) throws IOException {
 
+		boolean exportTest = false;
+		String exportPath = "model.txt";
+
 		//HyperParameters
 		
 		int dimensions = 100;
@@ -76,34 +79,17 @@ public class LinRegTest {
 		for (int i = 0; i < dimensions; i++)
 			System.out.println(targetWeights.getValue(i) + "  " + weights.getValue(i));
 
-		System.out.println("\n" + targetBias + "  " + bias);
+		System.out.println("\n" + targetBias + "  " + bias + "\n");
 		
-		//Data Export test
+		if (exportTest){
+
+			model.save(exportPath);
 		
-		/*
-		String filename = "ModelSaveTest" + ".txt";
+			LinearRegression model2 = LinearRegression.load(exportPath);
 		
-		model.save(filename);
-		
-		//Data Import test
-		
-		File savedParameters = new File(filename);
-		Scanner reader = new Scanner(savedParameters);
-		
-		LinearRegression model2 = new LinearRegression(dimensions);
-		
-		for(int i = 0; i < dimensions; i++) {
-			model2.forceWeightValue(i, reader.nextFloat());
+			System.out.println(model2.getLoss(testingExamples));
+			System.out.println(model2.getLoss(trainingExamples));
 		}
-		
-		model2.forceBiasValue(reader.nextFloat());
-		
-		reader.close();
-		
-		System.out.println(model2.getLoss(testingExamples));
-		System.out.println(model2.getLoss(trainingExamples));
-		
-		*/
 	}
 
 	public static float computeTestLabel(Vector input, Vector targetWeights, float targetBias, float noiseScale) {
