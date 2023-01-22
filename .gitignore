@@ -1,4 +1,10 @@
-code\JinVSguide.md
+# My ignores
+code/JinVSguide.md
+.DS_Store
+code/.DS_Store
+code/bin
+code/src/.DS_Store
+code/.vscode
 
 # Compiled class file
 *.class
