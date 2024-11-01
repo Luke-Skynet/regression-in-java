@@ -1,23 +1,22 @@
 package math;
 
-
 /**
- * This class provides a vector datatype of floats. V = f^n
+ * This class provides a vector datatype of doubles. V = f^n
  * NOTE: Although these vectors interact with matrices a lot, they do NOT have a definitive orientation.
  * Each member function specifies when needed whether the vector acts as a column or a row.
  */
 public class Vector {
 
-	private final float[] arr;
+	private final double[] arr;
 	
 	//Constructors
 	
 	/**
-	 * This constructor creates a vector object using the values from a float array.
-	 * @param arr - the float array that is deeply copied.
+	 * This constructor creates a vector object using the values from a double array.
+	 * @param arr - the double array that is deeply copied.
 	 */
-	public Vector(float[] arr) {
-		this.arr = new float[arr.length];
+	public Vector(double[] arr) {
+		this.arr = new double[arr.length];
 		for(int i = 0; i < arr.length; i++) {
 			this.arr[i] = arr[i];
 		}
@@ -28,13 +27,13 @@ public class Vector {
 	 * @param length int - the length / dimension of the vector
 	 */
 	public Vector(int length) {
-		arr = new float[length];
+		arr = new double[length];
 	}
 	
 	//Accessors
 	
 	/**
-	 * This returns the dimension of the vector float^n -> n.
+	 * This returns the dimension of the vector double^n -> n.
 	 * @return int - natural number
 	 */
 	public int getLength() {
@@ -44,9 +43,9 @@ public class Vector {
 	/**
 	 * This returns the scalar value at the specified index.
 	 * @param i int - the index
-	 * @return float - value at index i
+	 * @return double - value at index i
 	 */
-	public float getValue(int i) {
+	public double getValue(int i) {
 		return arr[i];
 	}
 	/**
@@ -62,17 +61,17 @@ public class Vector {
 	/**
 	 * This mutates specific element in the vector.
 	 * @param i int - the index of the mutated value
-	 * @param value float - the new value at the index
+	 * @param value double - the new value at the index
 	 */
-	public void setValue(int i, float value) {
+	public void setValue(int i, double value) {
 		arr[i] = value;
 	}
 	
 	/**
 	 * This sets all the elements in the vector to a single value.
-	 * @param value float - the value to set all elements to
+	 * @param value double - the value to set all elements to
 	 */
-	public void setValues(float value) {
+	public void setValues(double value) {
 		for(int i = 0; i < arr.length; i++) {
 			this.arr[i] = value;
 		}
@@ -83,7 +82,7 @@ public class Vector {
 	 */
 	public void setValuesRandom() {
 		for(int i = 0; i < arr.length; i++) {
-			this.arr[i] = (float) ( 2 * ( Math.random() - .5 ) );
+			this.arr[i] = (double) ( 2 * ( Math.random() - .5 ) );
 		}
 	}
 	
@@ -95,7 +94,7 @@ public class Vector {
 		for(int i = 0; i < arr.length; i++) {
 			System.out.print(this.getValue(i) + " ");
 		}
-	}
+	} 
 	
 	/**
 	 * This returns all the elements of the vector with spaces in between them.
@@ -126,6 +125,17 @@ public class Vector {
 		
 		for (int i = 0; i < result.getLength(); i++) {
 			result.setValue(i, this.getValue(i) + that.getValue(i));
+		}
+		
+		return result;
+	}
+
+	public Vector plus(double scalar) {
+		
+		Vector result = new Vector(this.getLength());
+		
+		for (int i = 0; i < result.getLength(); i++) {
+			result.setValue(i, this.getValue(i) + scalar);
 		}
 		
 		return result;
@@ -190,14 +200,14 @@ public class Vector {
 	/**
 	 * Typical Vector dot product.
 	 * @param that - aother vector of the same dimension
-	 * @return float y = sum(Ai * bi) for i in vectors A,B
+	 * @return double y = sum(Ai * bi) for i in vectors A,B
 	 */
-	public float dot(Vector that) {
+	public double dot(Vector that) {
 		
 		if (this.getLength() != that.getLength())
 			throw new IllegalArgumentException();
 		
-		float result = 0;
+		double result = 0;
 		
 		for (int i = 0; i < this.getLength(); i++) {
 			result += this.getValue(i) * that.getValue(i);
@@ -206,11 +216,41 @@ public class Vector {
 		return result;
 	}
 	
+	public Matrix outer(Vector that) {
+		
+		Matrix result = new Matrix(this.getLength(), that.getLength());
+
+		for(int i = 0; i < this.getLength(); i++){
+			for(int j = 0; j < that.getLength(); j++) {
+				result.setValue(i, j, this.getValue(i) * that.getValue(j));
+			}
+		}
+
+		return result;
+	}
+
+	public Vector log() {
+		Vector result = new Vector(this.getLength());
+		for(int i = 0; i < result.getLength(); i++){
+			result.setValue(i, Math.log(this.getValue(i) + .001f));
+		}
+		return result;
+	}
+
+	public Vector pow(double power) {
+		Vector result = new Vector(this.getLength());
+		for(int i = 0; i < result.getLength(); i++){
+			result.setValue(i, Math.pow(this.getValue(i), power));
+		}
+		return result;
+	}
+
+
 	/**
 	 * Inplace scaling of each element by a scalar.
-	 * @param scalar - float scalar k in V -> kV
+	 * @param scalar - double scalar k in V -> kV
 	 */
-	public void scale(float scalar) {
+	public void scale(double scalar) {
 		
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = arr[i] * scalar;
@@ -218,11 +258,11 @@ public class Vector {
 	}
 	
 	/**
-	 * Non-inplace scaling of each element by a float scalar.
-	 * @param scalar - float scalar k in kV
+	 * Non-inplace scaling of each element by a double scalar.
+	 * @param scalar - double scalar k in kV
 	 * @return vector W = kV
 	 */
-	public Vector scaled(float scalar) {
+	public Vector scaled(double scalar) {
 		
 		Vector result = new Vector(arr.length);
 		

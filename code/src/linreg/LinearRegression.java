@@ -10,10 +10,10 @@ import java.io.*;
  * This class provides multilinear regression. R^n -> R. 
  * Instead of using least squares to optimize, it uses gradient descent.
  */
-public class LinearRegression implements Model<Vector, Float, LinRegData>{
+public class LinearRegression implements Model<Vector, Double, LinRegData>{
 	
 	private Vector weights;
-	private float bias;
+	private double bias;
 	
 	/**
 	 * Constructor where only the dimension is given and all values are set to default 0. Good for when model will be trained.
@@ -29,7 +29,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	 * @param weights - the weights that are deeply copied and used as parameters 
 	 * @param bias - the bias / intecept that is copied
 	 */
-	public LinearRegression(Vector weights, float bias) {
+	public LinearRegression(Vector weights, double bias) {
 		this.weights = weights.deepCopy();
 		this.bias = bias;
 	}
@@ -40,47 +40,12 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	 * @return scalar Y = W*X + b
 	 */
 	@Override
-	public Float compute(Vector x) {
+	public Double compute(Vector x) {
 		return weights.dot(x) + bias;
 	}
-	
-	/**
-	 * Training method that looks at every data point in the training set before updating weights during steps (nonstochastic).
-	 * @param training - an array of LinRegData (vector, float) objects that the model uses for weight updating
-	 * @param testing - an array of LinRegData (vector, float) objects that is used to display loss when verbose is true 
-	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .01 and .1
-	 * @param epochs - number of times the model goes through the training data array, (also number of training steps as this method is not stochastic)
-	 * @param verbose - display toggle for viewing training process, (setting to false will disable testing data passes / loss computation)
-	 */
+
 	@Override
-	public void train(LinRegData[] training, LinRegData[] testing, float learningRate, int epochs, boolean verbose){
-
-		if(verbose){
-			System.out.println("Starting Training: ");
-		}
-
-		for (int e = 0; e < epochs; e++) {
-			
-			this.updateWB(training, learningRate);
-			
-			if (verbose) {
-				if (e % 100 == 0)
-					System.out.println("Iteration: " + e + " Loss: " + this.getLoss(testing));
-			}
-		}
-		
-	}
-
-	/**
-	 * Training method that uses batches of data samples to update weights at every step (stochastic gradient descent).
-	 * @param training - an array of LinRegData (vector, float) objects that the model uses for weight updating
-	 * @param testing - an array of LinRegData (vector, float) objects that is used to display loss when verbose is true 
-	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .01 and .1
-	 * @param iterations - the number of times that the model uses a batch to update its parameters (Epochs = iterations * batchsize / training length)
-	 * @param batchSize - the number of samples the model uses to update its weights during a training step
-	 * @param verbose - display toggle for viewing training process, (setting to false will disable testing data passes / loss computation)
-	 */
-	public void train(LinRegData[] training, LinRegData[] testing, float learningRate, int iterations, int batchSize, boolean verbose){
+	public void train(LinRegData[] training, LinRegData[] testing, int batchSize, double learningRate, int epochs, boolean verbose){
 		
 		if (verbose){
 			System.out.println("Creating Batches");
@@ -113,34 +78,19 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		if (verbose){
 			System.out.println("Starting Training:");
 		}
-		int iteration = 0;
-		
-		outerloop:
-		while (true) {
-			for (int i = 0; i < batchCount; i++) {
-				
-				this.updateWB(batches[i], learningRate);
-				
-				if (verbose) {
-					if (iteration % 100 == 0)
-						System.out.println("Iteration: " + iteration + " Loss: " + this.getLoss(testing));
-				}
-				
-				if (iteration++ >= iterations) 
-					break outerloop;
+	
+        for(int e = 1; e <= epochs; e++){
+            for (int i = 0; i < batchCount; i++) {
+                this.updateWB(training, learningRate);
 			}
+        
 			if (spareCount > 0) {
-				
-				this.updateWB(spareBatch, learningRate);
-				
-				if (verbose) {
-					if (iteration % 100 == 0)
-						System.out.println("Iteration: " + iteration + " Loss: " + this.getLoss(testing));
-				}
-				
-				if (iteration++ >= iterations) 
-					break outerloop;
+                this.updateWB(spareBatch, learningRate);
 			}
+
+            if (verbose) {
+				System.out.println("Epoch: " + e + " Loss: " + this.getLoss(testing));
+            }
 		}
 	}
 
@@ -149,27 +99,27 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	 * @param training - array of training samples to calculate gradients
 	 * @param learningRate - floating point scalar multiplier used to scale gradient before adding them to wieghts and bias
 	 */
-	private void updateWB(LinRegData[] training, float learningRate){
+	private void updateWB(LinRegData[] training, double learningRate){
 		
 		Vector deltaWeights = new Vector(weights.getLength());
-		float deltaBias = 0;
+		double deltaBias = 0;
 		
 		for (int i = 0; i < training.length; i++) {
 			
 			Vector xi = training[i].getData();
-			float yi = training[i].getLabel();
+			double yi = training[i].getLabel();
 				
-			float error = yi - this.compute(xi);
+			double error = yi - this.compute(xi);
 
 			Vector dwi = xi.scaled(-2 * error);
-			float dbi = (-2 * error);
+			double dbi = (-2 * error);
 				
 			deltaWeights = deltaWeights.plus(dwi);
 			deltaBias += dbi;
 		}
 		
-		deltaWeights.scale((float) (1.0 / training.length));
-		deltaBias /= (float) training.length;
+		deltaWeights.scale((1.0 / training.length));
+		deltaBias /= training.length;
 		
 		weights = weights.minus(deltaWeights.scaled(learningRate));
 		bias = bias - (deltaBias * learningRate);
@@ -188,7 +138,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 		for (int i = 0; i < examples.length; i++) {
 			
 			Vector xi = examples[i].getData();
-			float yi = examples[i].getLabel();
+			double yi = examples[i].getLabel();
 			
 			loss += Math.pow(yi - this.compute(xi), 2);
 		}
@@ -209,17 +159,17 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	/**
 	 * This returns a single floating point value of a specific weight by index.
 	 * @param i the index of the weight
-	 * @return float - the weight value
+	 * @return double - the weight value
 	 */
-	public float getWeightValue(int i) {
+	public double getWeightValue(int i) {
 		return weights.getValue(i);
 	}
 	
 	/**
 	 * This returns the bias / intecept of the model's linear function.
-	 * @return float - the b part of y = W*X + b
+	 * @return double - the b part of y = W*X + b
 	 */
-	public float getBias() {
+	public double getBias() {
 		return bias;
 	}
 	
@@ -267,7 +217,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 
 		try{	
 
-			float bias = Float.parseFloat(biasString);
+			double bias = Float.parseFloat(biasString);
 
 			String[] tokens = weightString.split("\\s+");
 			Vector weights = new Vector(tokens.length);
@@ -287,7 +237,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	 * @param i - the index of the weight
 	 * @param value - the value that the weight is forced to
 	 */
-	public void forceWeightValue(int i, float value) {
+	public void forceWeightValue(int i, double value) {
 		this.weights.setValue(i, value);
 	}
 
@@ -295,7 +245,7 @@ public class LinearRegression implements Model<Vector, Float, LinRegData>{
 	 * This forces the bias to a specified value for if you ever need it.
 	 * @param value - the value that the weight is forced to
 	 */
-	public void forceBiasValue(float value) {
+	public void forceBiasValue(double value) {
 		this.bias = value;
 	}
 
