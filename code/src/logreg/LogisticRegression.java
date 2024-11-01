@@ -4,16 +4,15 @@ import interfaces.Model;
 
 import java.io.*;
 import math.Vector;
-import math.Functions;
 
 /**
  * This provides multifeature logistic regresion R^N -> (0,1),
  * uses SGD to optimize parameters.
  */
-public class LogisticRegression implements Model<Vector, Float, LogRegData>{
+public class LogisticRegression implements Model<Vector, Double, LogRegData>{
 	
 	private Vector weights;
-	private float bias;
+	private double bias;
 
 	/**
 	 * Constructor where only the dimension is given and all values are set to default 0. Good for when model will be trained.
@@ -21,14 +20,14 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	 */
 	public LogisticRegression(int features) {
 		this.weights = new Vector(features);
-		this.bias = 0.0f;
+		this.bias = 0.0;
 	}
 	/**
 	 * Constructor where all the weights and bias are initialized to specific input. This is good for when parameters are already estimated.
 	 * @param weights - the weights that are deeply copied and used as parameters 
 	 * @param bias - the bias / intecept that is copied
 	 */
-	public LogisticRegression(Vector weights, float bias) {
+	public LogisticRegression(Vector weights, double bias) {
 		this.weights = weights.deepCopy();
 		this.bias = bias;
 	}
@@ -38,47 +37,12 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	* @return scalar Y = sigmoid(W*X + b)
 	*/
 	@Override
-	public Float compute(Vector x) {
-		return Functions.sigmoid(weights.dot(x) + bias);
+	public Double compute(Vector x) {
+		return 1 / (1 + Math.exp( -(weights.dot(x) + bias) ));
 	}
 
-	/**
-	 * Training method that looks at every data point in the training set before updating weights during steps (nonstochastic).
-	 * @param training - an array of LogRegData (vector, float) objects that the model uses for weight updating
-	 * @param testing - an array of LogRegData (vector, float) objects that is used to display loss when verbose is true 
-	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .05 and .1
-	 * @param epochs - number of times the model goes through the training data array, (also number of training steps as this method is not stochastic)
-	 * @param verbose - display toggle for viewing training process, (setting to false will disable testing data passes / loss computation)
-	 */
 	@Override
-	public void train(LogRegData[] training, LogRegData[] testing, float learningRate, int epochs, boolean verbose){
-
-		if(verbose){
-			System.out.println("Starting Training: ");
-		}
-
-		for (int e = 0; e < epochs; e++) {
-			
-			this.updateWB(training, learningRate);
-			
-			if (verbose) {
-				if (e % 100 == 0)
-					System.out.println("Iteration: " + e + " Loss: " + this.getLoss(testing));
-			}
-		}
-		
-	}
-
-	/**
-	 * Training method that uses batches of data samples to update weights at every step (stochastic gradient descent).
-	 * @param training - an array of LogRegData (vector, float) objects that the model uses for weight updating
-	 * @param testing - an array of LogRegData (vector, float) objects that is used to display loss when verbose is true 
-	 * @param learningRate - a single precision float used to scale gradients for training steps. good values are usually between .01 and .1
-	 * @param iterations - the number of times that the model uses a batch to update its parameters Epochs = iterations * batchsize / training length
-	 * @param batchSize - the number of samples the model uses to update its weights during a training step
-	 * @param verbose - display toggle for viewing training process, (setting to false will disable testing data passes / loss computation)
-	 */
-	public void train(LogRegData[] training, LogRegData[] testing, float learningRate, int iterations, int batchSize, boolean verbose){
+	public void train(LogRegData[] training, LogRegData[] testing, int batchSize, double learningRate, int epochs, boolean verbose){
 		
 		if (verbose){
 			System.out.println("Creating Batches");
@@ -112,62 +76,47 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 			System.out.println("Starting Training: ");
 		}
 
-		int iteration = 0;
-		
-		outerloop:
-		while (true) {
-			for (int i = 0; i < batchCount; i++) {
-
-				this.updateWB(batches[i], learningRate);
-				
-				if (verbose) {
-					if (iteration % 100 == 0)
-						System.out.println("Iteration: " + iteration + " Loss: " + this.getLoss(testing));
-				}
-				
-				if (iteration++ >= iterations) 
-					break outerloop;
+		for(int e = 1; e <= epochs; e++){
+            for (int i = 0; i < batchCount; i++) {
+                this.updateWB(training, learningRate);
 			}
+        
 			if (spareCount > 0) {
-				
-				this.updateWB(spareBatch, learningRate);
-				
-				if (verbose) {
-					if (iteration % 100 == 0)
-						System.out.println("Iteration: " + iteration + " Loss: " + this.getLoss(testing));
-				}
-				
-				if (iteration++ >= iterations) 
-					break outerloop;
+                this.updateWB(spareBatch, learningRate);
 			}
+
+            if (verbose) {
+				System.out.println("Epoch: " + e + " Loss: " + this.getLoss(testing));
+            }
 		}
 	}
+	
 	/**
 	 * This is an internal method for taking single training step based off of a batch of samples.
 	 * @param training - array of training samples to calculate gradients
-	 * @param learningRate - floating point scalar multiplier used to scale gradient before adding them to wieghts and bias
+	 * @param learningRate - doubleing point scalar multiplier used to scale gradient before adding them to wieghts and bias
 	 */
-	private void updateWB(LogRegData[] training, float learningRate) {
+	private void updateWB(LogRegData[] training, double learningRate) {
 		
 		Vector deltaWeights = new Vector(weights.getLength());
-		float deltaBias = 0;
+		double deltaBias = 0;
 		
 		for (int i = 0; i < training.length; i++) {
 			
 			Vector xi = training[i].getData();
-			float yi = training[i].getLabelVal();
+			double yi = training[i].getLabelVal();
 			
-			float error = yi - this.compute(xi);
+			double error = yi - this.compute(xi);
 
 			Vector dwi = xi.scaled(-1 * error);
-			float dbi = -1 * error;
+			double dbi = -1 * error;
 				
 			deltaWeights = deltaWeights.plus(dwi);
 			deltaBias += dbi;
 		}
 		
-		deltaWeights.scale((float) (1.0 / training.length));
-		deltaBias /= (float) training.length;
+		deltaWeights.scale( (1.0 / training.length));
+		deltaBias /= training.length;
 		
 		weights = weights.minus(deltaWeights.scaled(learningRate));
 		bias = bias - (deltaBias * learningRate);
@@ -175,7 +124,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	
 	/**
 	 * This calculates the cross entropy/log loss between the predicted values y' = sigmoid(W*X+b) and ground truth (y).
-	 * @param examples - LogRegData array of samples (Vector, float)
+	 * @param examples - LogRegData array of samples (Vector, double)
 	 * @return double - Cross entropy between y' and y
 	 */
 	@Override
@@ -205,19 +154,19 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	}
 
 	/**
-	 * This returns a single floating point value of a specific weight by index.
+	 * This returns a single doubleing point value of a specific weight by index.
 	 * @param i the index of the weight
-	 * @return float - the weight value
+	 * @return double - the weight value
 	 */
-	public float getWeightValue(int i) {
+	public double getWeightValue(int i) {
 		return weights.getValue(i);
 	}
 	
 	/**
 	 * This returns the bias / shift of the model's logistic function.
-	 * @return float - the b part of y = sigmoid(W*X + b)
+	 * @return double - the b part of y = sigmoid(W*X + b)
 	 */
-	public float getBias() {
+	public double getBias() {
 		return bias;
 	}
 
@@ -265,12 +214,12 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 
 		try{	
 
-			float bias = Float.parseFloat(biasString);
+			double bias = Double.parseDouble(biasString);
 
 			String[] tokens = weightString.split("\\s+");
 			Vector weights = new Vector(tokens.length);
 			for (int i = 0; i < tokens.length; i++){
-				weights.setValue(i, Float.parseFloat(tokens[i]));
+				weights.setValue(i, Double.parseDouble(tokens[i]));
 			}
 
 			return new LogisticRegression(weights, bias);
@@ -285,7 +234,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	 * @param i - the index of the weight
 	 * @param value - that value that the weight is forced to
 	 */
-	public void forceWeightValue(int i, float value) {
+	public void forceWeightValue(int i, double value) {
 		weights.setValue(i, value);
 	}
 
@@ -293,7 +242,7 @@ public class LogisticRegression implements Model<Vector, Float, LogRegData>{
 	 * This forces the bias to a specified value if you ever need it.
 	 * @param value - the value that the weight is forced to
 	 */
-	public void forceBiasValue(float value) {
+	public void forceBiasValue(double value) {
 		bias = value;
 	}
 	

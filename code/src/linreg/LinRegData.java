@@ -7,19 +7,19 @@ import math.Vector;
 /**
  * This class defines the data type for Linear Regression.
  * It is an object that bundles together an input vector (data) and
- * an output scalar float value representing the ground truth. 
+ * an output scalar double value representing the ground truth. 
  */
-public class LinRegData implements Sample<Vector, Float>{
+public class LinRegData implements Sample<Vector, Double>{
 	
 	private final Vector data;
-	private final float label;
+	private final double label;
 
 	/**
 	 * basic constructor with the data and label
 	 * @param data - Vector (X)
-	 * @param label - float (Y)
+	 * @param label - double (Y)
 	 */
-	public LinRegData(Vector data, float label) {
+	public LinRegData(Vector data, double label) {
 		this.data = data;
 		this.label = label;
 	}
@@ -33,10 +33,10 @@ public class LinRegData implements Sample<Vector, Float>{
 	}
 
 	/**
-	 * @return float - scalar (Y)
+	 * @return double - scalar (Y)
 	 */
 	@Override
-	public Float getLabel(){
+	public Double getLabel(){
 		return label;
 	}
 	/**
@@ -45,7 +45,7 @@ public class LinRegData implements Sample<Vector, Float>{
 	 * @param yValues one dimensional array representing the labels
 	 * @return LinRegData array
 	 */
-	public static LinRegData[] format(float[][] xValues, float[] yValues) {
+	public static LinRegData[] format(double[][] xValues, double[] yValues) {
 		
 		Vector[] vectors = new Vector[xValues.length];
 		
@@ -68,7 +68,7 @@ public class LinRegData implements Sample<Vector, Float>{
 	 * @param labels - the array of labels
 	 * @return
 	 */
-	public static LinRegData[] format(Vector[] vectors, float[] labels) {
+	public static LinRegData[] format(Vector[] vectors, double[] labels) {
 		
 		LinRegData[] data = new LinRegData[vectors.length];
 		

@@ -1,26 +1,28 @@
 package math;
 
+import java.util.Random;
+
 /**
- * This class provides a matrix data type (mat = float(m,n)). 
+ * This class provides a matrix data type (mat = double(m,n)). 
  */
 public class Matrix {
 
-	private final float[][] arr;
+	private final double[][] arr;
 
 	//Constructors
 
 	/**
-	 * This constructs a matrix object by defensively copying the contents of a 2d rectangular float array.
-	 * @param arr - a non jagged 2d float array
+	 * This constructs a matrix object by defensively copying the contents of a 2d rectangular double array.
+	 * @param arr - a non jagged 2d double array
 	 */
-	public Matrix(float[][] arr) {
+	public Matrix(double[][] arr) {
 	
 		for(int i = 0; i < arr.length; i++){
 			if (arr[0].length != arr[i].length)
 				throw new IllegalArgumentException("Cannot create Matrix - 2D array is jagged");
 		}
 		
-		this.arr = new float[arr.length][arr[0].length];
+		this.arr = new double[arr.length][arr[0].length];
 		for(int i = 0; i < arr.length; i++) {
 			for(int j = 0; j < arr[0].length; j++) {
 				this.arr[i][j] = arr[i][j];
@@ -34,7 +36,7 @@ public class Matrix {
 	 * @param rowSize - number of colums in the matrix (n)
 	 */
 	public Matrix(int columnSize, int rowSize) {
-		arr = new float[columnSize][rowSize];
+		arr = new double[columnSize][rowSize];
 	}
 	
 	//Accessors and Mutators
@@ -57,19 +59,21 @@ public class Matrix {
 	 * This modifies a single value in the Matrix, given its index (i,j) or (m,n).
 	 * @param i - first index (m)
 	 * @param j - second index (n)
-	 * @param value - the new floating point value in Mat(i,j)
+	 * @param value - the new doubleing point value in Mat(i,j)
 	 */
-	public void setValue(int i, int j, float value) {
+	public void setValue(int i, int j, double value) {
 		arr[i][j] = value;
 	}
 	
 	/**
-	 * This sets all of the values in the matrix to a random number between (-1, 1).
+	 * This sets all of the values in the matrix to random normally distributed numbers.
 	 */
 	public void setValuesRandom() {
+		Random random = new Random();
+
 		for (int i = 0; i < this.getColumnSize(); i++) {
 			for (int j = 0; j < this.getRowSize(); j++) {
-				this.setValue(i, j, (float) ( 2 * (Math.random() - .5) ) );
+				this.setValue(i, j, random.nextGaussian());
 			}
 		}
 	}
@@ -78,9 +82,9 @@ public class Matrix {
 	 * This accesses a single value in the matrix, given its index (i,j) or (m,n).
 	 * @param i - first index (m)
 	 * @param j - second index (n)
-	 * @return float - value at mat(i,j)
+	 * @return double - value at mat(i,j)
 	 */
-	public float getValue(int i, int j) {
+	public double getValue(int i, int j) {
 		return arr[i][j];
 	}
 	
@@ -138,6 +142,7 @@ public class Matrix {
 	}
 	
 	//Math Functions
+	
 	/**
 	 * Element wise matrix addition.
 	 * @param that - another matrix of the same dimension
@@ -156,6 +161,22 @@ public class Matrix {
 		for (int i = 0; i < columnsize; i++) {
 			for (int j = 0; j < rowsize; j++) {
 				result.setValue(i, j, this.getValue(i, j) + that.getValue(i, j));
+			}
+		}
+		
+		return result;
+	}
+
+	public Matrix plus(double scalar) {
+
+		int columnsize = this.getColumnSize();
+		int rowsize = this.getRowSize();
+		
+		Matrix result = new Matrix(columnsize, rowsize);
+		
+		for (int i = 0; i < columnsize; i++) {
+			for (int j = 0; j < rowsize; j++) {
+				result.setValue(i, j, this.getValue(i, j) + scalar);
 			}
 		}
 		
@@ -226,7 +247,7 @@ public class Matrix {
 		Vector result = new Vector(this.getColumnSize());
 		
 		for (int i = 0; i < result.getLength(); i++) {
-			float total = 0f;
+			double total = 0.0;
 			for (int k = 0; k < x; k++) {
 				total += this.getValue(i, k) * that.getValue(k);
 			}
@@ -283,12 +304,28 @@ public class Matrix {
 		
 		return result;
 	}
+
+	public Matrix elePow(double power) {
+		
+		int columnsize = this.getColumnSize();
+		int rowsize = this.getRowSize();
+		
+		Matrix result = new Matrix(columnsize, rowsize);
+		
+		for (int i = 0; i < columnsize; i++) {
+			for (int j = 0; j < rowsize; j++) {
+				result.setValue(i, j, Math.pow(this.getValue(i, j), power));
+			}
+		}
+		
+		return result;
+	}
 	
 	/**
-	 * Inplace scaling of the matrix by a float scalar.
-	 * @param scalar - float scalar k in A <- kA
+	 * Inplace scaling of the matrix by a double scalar.
+	 * @param scalar - double scalar k in A <- kA
 	 */
-	public void scale(float scalar) {
+	public void scale(double scalar) {
 		
 		for (int i = 0; i < this.getColumnSize(); i++) {
 			for (int j = 0; j < this.getRowSize(); j++) {
@@ -298,11 +335,11 @@ public class Matrix {
 	}
 	
 	/**
-	 * Non-inplace scaling of a matrix by a float scalar.
-	 * @param scalar - float scalar k in kA
+	 * Non-inplace scaling of a matrix by a double scalar.
+	 * @param scalar - double scalar k in kA
 	 * @return Matrix B = kA
 	 */
-	public Matrix scaled(float scalar) {
+	public Matrix scaled(double scalar) {
 		
 		int columnsize = this.getColumnSize();
 		int rowsize = this.getRowSize();
@@ -336,6 +373,19 @@ public class Matrix {
 		}
 		
 		return result;		
+	}
+
+	public Vector flatten() {
+
+		Vector result = new Vector(this.getColumnSize() * this.getRowSize());
+
+		for (int i = 0; i < this.getColumnSize(); i++){
+			for (int j = 0; j < this.getRowSize(); j++){
+				result.setValue(i * this.getRowSize() + j, this.getValue(i, j));
+			}
+		}
+
+		return result;
 	}
 	
 	public static void main(String[] args) {

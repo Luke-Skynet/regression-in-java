@@ -25,11 +25,11 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	}
 
 	/**
-	 * Another constructor with the data and label as a float.
+	 * Another constructor with the data and label as a double.
 	 * @param data - Vector (X)
-	 * @param label - float to boolean true if > .f
+	 * @param label - double to boolean true if > .f
 	 */
-	public LogRegData(Vector data, float label) {
+	public LogRegData(Vector data, double label) {
 		this.data = data;
 		this.label = label > .5f;
 	}
@@ -58,9 +58,9 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	}
 	
 	/**
-	 * @return float - label (Y)
+	 * @return double - label (Y)
 	 */
-	public float getLabelVal(){
+	public double getLabelVal(){
 		return label ? 1f : 0f;
 	}
 
@@ -70,7 +70,7 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	 * @param yValues one dimensional array representing the labels
 	 * @return
 	 */
-	public static LogRegData[] format(float[][] xValues, boolean[] yValues) {
+	public static LogRegData[] format(double[][] xValues, boolean[] yValues) {
 		
 		Vector[] vectors = new Vector[xValues.length];
 		
@@ -111,7 +111,7 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	 * @param yValues one dimensional array representing the labels
 	 * @return LogRegData array
 	 */
-	public static LogRegData[] format(float[][] xValues, float[] yValues) {
+	public static LogRegData[] format(double[][] xValues, double[] yValues) {
 		
 		Vector[] vectors = new Vector[xValues.length];
 		
@@ -135,7 +135,7 @@ public class LogRegData implements Sample<Vector, Boolean>{
 	 * @param labels - the array of labels
 	 * @return LogRegData array
 	 */
-	public static LogRegData[] format(Vector[] vectors, float[] labels) {
+	public static LogRegData[] format(Vector[] vectors, double[] labels) {
 		
 		LogRegData[] data = new LogRegData[vectors.length];
 		
