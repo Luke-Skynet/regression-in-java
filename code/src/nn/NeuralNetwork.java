@@ -99,6 +99,7 @@ public class NeuralNetwork implements Model<Vector, Vector, NNData>{
 		}
     }
 
+    @Override
     public double getLoss(NNData[] validation){
 
         double loss = 0;

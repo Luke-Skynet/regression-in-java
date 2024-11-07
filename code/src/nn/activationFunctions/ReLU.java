@@ -6,10 +6,9 @@ public class ReLU implements ActivationFunction<Vector>{
     
     Vector input;
 
-    public ReLU(int inDimension){
-        this.input = new Vector(inDimension);
-    }
+    public ReLU(){}
 
+    @Override
     public Vector forward(Vector input){
 
         this.input = input;
@@ -23,6 +22,7 @@ public class ReLU implements ActivationFunction<Vector>{
         return result;
     }
 
+    @Override
     public Vector backward(Vector gradient){
 
         Vector result = new Vector(gradient.getLength());
@@ -33,4 +33,12 @@ public class ReLU implements ActivationFunction<Vector>{
 
         return result;
     }
+
+    @Override
+    public void zeroGrad(){};
+
+    @Override
+    public void update(double learningRate, int t, int batchSize){};
+
+
 }

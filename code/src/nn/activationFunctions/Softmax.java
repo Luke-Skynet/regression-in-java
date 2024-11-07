@@ -6,10 +6,9 @@ public class Softmax implements ActivationFunction<Vector>{
     
     Vector input;
 
-    public Softmax(int inDimension){
-        this.input = new Vector(inDimension);
-    }
+    public Softmax(){}
 
+	@Override
     public Vector forward(Vector input){
 
         double normalization = Math.pow(input.dot(input) / input.getLength(), .5);
@@ -31,7 +30,14 @@ public class Softmax implements ActivationFunction<Vector>{
 		return result;
     }
 
+	@Override
     public Vector backward(Vector gradient){
         return gradient;
     }
+
+	@Override
+	public void zeroGrad(){};
+
+	@Override
+    public void update(double learningRate, int t, int batchSize){};
 }

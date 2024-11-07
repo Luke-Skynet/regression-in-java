@@ -80,9 +80,9 @@ public class NNTest {
             NeuralNetwork model = new NeuralNetwork();
 
             model.addLayer(new nn.Dense(784, 128));
-            model.addLayer(new Activation(new nn.activationFunctions.ReLU(128)));
+            model.addLayer(new nn.activationFunctions.ReLU());
             model.addLayer(new nn.Dense(128, 10));
-            model.addLayer(new Activation(new nn.activationFunctions.Softmax(10)));
+            model.addLayer(new nn.activationFunctions.Softmax());
             
             model.train(training, testing, batchSize, learningRate, epochs, verbose);
 

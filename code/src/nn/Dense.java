@@ -44,16 +44,14 @@ public class Dense implements Layer<Vector, Vector>{
         this.Bv = new Vector(outDimension);
     }
 
-    public void zeroGrad(){
-        this.weightGradients.scale(0);
-        this.biasGradients.scale(0);
-    }
-
+    @Override
     public Vector forward(Vector x){
         this.input = x;
         this.output = this.weights.dot(x).plus(bias);
         return this.output;
     }
+
+    @Override
     public Vector backward(Vector gradient){
 
         Matrix weightGradients = gradient.outer(this.input);
@@ -65,6 +63,13 @@ public class Dense implements Layer<Vector, Vector>{
         return this.weights.transpose().dot(gradient);
     }
 
+    @Override
+    public void zeroGrad(){
+        this.weightGradients.scale(0);
+        this.biasGradients.scale(0);
+    }
+
+    @Override
     public void update(double learningRate, int t, int batchSize){
 
         this.weightGradients.scale(1.0 / batchSize);
