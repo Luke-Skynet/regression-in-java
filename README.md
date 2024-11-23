@@ -1,4 +1,4 @@
-# MLDS-in-Java
+# ml-in-java
 
 This is my learning project/library where I implement regression, classification, and other things from scratch in Java.
 

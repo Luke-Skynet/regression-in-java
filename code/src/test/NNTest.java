@@ -14,7 +14,7 @@ public class NNTest {
 
         int batchSize = 64;
         double learningRate = .01;
-        int epochs = 20;
+        int epochs = 10;
         boolean verbose = true;
         double trainTestSplit = .8;
 
@@ -86,8 +86,45 @@ public class NNTest {
             
             model.train(training, testing, batchSize, learningRate, epochs, verbose);
 
+            System.out.println("\nConfusion Matrix:");
+            Matrix confusionMatrix = confusionMatrix(testing, model);
+            confusionMatrix.print();
+
         } catch (Exception e) {
             System.err.println(e.toString());
         }
+    }
+
+    public static Matrix confusionMatrix(NNData[] data, NeuralNetwork model){
+
+        int dimension = data[0].getLabel().getLength();
+        Matrix confusionMatrix = new Matrix(dimension, dimension);
+
+        for(int i = 0; i < data.length; i++) {
+
+            Vector groundTruth = data[i].getLabel();
+            Vector prediction  = model.compute(data[i].getData());
+            
+            int truthIndex = 0;
+            double truthMax = 0.0;
+            int predIndex = 0;
+            double predMax = 0.0;
+
+            for(int j = 0; j < dimension; j++){
+                if (groundTruth.getValue(j) > truthMax){
+                    truthMax = groundTruth.getValue(j);
+                    truthIndex = j;
+                }
+
+                if (prediction.getValue(j) > predMax){
+                    predMax = prediction.getValue(j);
+                    predIndex = j;
+                }
+            }
+
+            confusionMatrix.setValue(truthIndex, predIndex, confusionMatrix.getValue(truthIndex, predIndex) + 1);
+
+        }
+        return confusionMatrix;
     }
 } 
